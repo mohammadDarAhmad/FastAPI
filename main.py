@@ -15,7 +15,7 @@ def read_item(item_id: int, q: Optional[str] = None):
     if item_id > 0:
         return {"item_id": item_id, "q": q}
     else:
-        return {"item id not found"}
+        return {"item_id not found"}
 
 
 class Blog(BaseModel):
