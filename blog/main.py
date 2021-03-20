@@ -1,14 +1,11 @@
 from . import schemas, models, database
 from .database import engine
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, status , HTTPException
-
+from fastapi import FastAPI, Depends, status, HTTPException
 
 app = FastAPI()
 
-
 models.Base.metadata.create_all(engine)
-
 
 get_db = database.get_db
 
@@ -28,7 +25,7 @@ def all(db: Session = Depends(get_db)):
     return blogs
 
 
-@app.get('/blog/{id}',  status_code=status.HTTP_204_NO_CONTENT )
+@app.get('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def show(id, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
@@ -58,4 +55,20 @@ def update(id, request: schemas.Blog, db: Session = Depends(get_db)):
     return 'updated'
 
 
+@app.post('/user', response_model=schemas.ShowUser)
+def create_user(request: schemas.User, db: Session = Depends(get_db)):
+    new_user = models.User(
+        name=request.name, email=request.email, password=request.password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
 
+
+@app.get('/user/{id}')
+def show(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with the id {id} is not available")
+    return user
