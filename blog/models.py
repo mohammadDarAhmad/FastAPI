@@ -33,7 +33,6 @@ class User(Base):
     user_group = relationship("userGroup", back_populates="users")
 
 
-
 class Group(Base):
     __tablename__ = 'groups'
 
@@ -41,5 +40,3 @@ class Group(Base):
     name = Column(String)
     description = Column(String)
     group_user = relationship("userGroup", back_populates="groups")
-
-

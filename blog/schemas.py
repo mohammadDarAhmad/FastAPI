@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
+
 from pydantic import BaseModel
 
 
@@ -23,19 +24,26 @@ class Group(BaseModel):
     description: str
 
 
-class ShowGroup(BaseModel):
+class ShowUser(BaseModel):
     name: str
-    description: str
-    users: List[User] = []
+    email: str
+    blogs: List[Blog] = []
 
     class Config():
         orm_mode = True
 
 
-class ShowUser(BaseModel):
+class ShowUserGroup(BaseModel):
+    users: ShowUser
+
+    class Config():
+        orm_mode = True
+
+
+class ShowGroup(BaseModel):
     name: str
-    email: str
-    blogs: List[Blog] = []
+    description: str
+    group_user: List[ShowUserGroup] = []
 
     class Config():
         orm_mode = True
