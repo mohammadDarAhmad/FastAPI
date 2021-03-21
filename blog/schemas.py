@@ -18,6 +18,20 @@ class User(BaseModel):
     password: str
 
 
+class Group(BaseModel):
+    name: str
+    description: str
+
+
+class ShowGroup(BaseModel):
+    name: str
+    description: str
+    users: List[User] = []
+
+    class Config():
+        orm_mode = True
+
+
 class ShowUser(BaseModel):
     name: str
     email: str

@@ -1,6 +1,6 @@
 from . import schemas, models, database
 from .database import engine
-from blog.routers import blog, user
+from blog.routers import blog, user ,group
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, status, HTTPException
 
@@ -15,7 +15,6 @@ models.Base.metadata.create_all(engine)
 get_db = database.get_db
 
 
-
-
 app.include_router(blog.router)
 app.include_router(user.router)
+app.include_router(group.router)
