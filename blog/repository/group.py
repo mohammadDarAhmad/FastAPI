@@ -17,6 +17,15 @@ def get_all(db: Session):
     return groups
 
 
+# This method to print all user have a group
+def get_users_have_group(db: Session):
+    users = db.query(models.User).join(models.userGroup).all()
+    if not users:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="not available any user in group")
+    return users
+
+
 def show(id: int, db: Session):
     group = db.query(models.Group).filter(models.Group.id == id).first()
     if not group:
@@ -41,4 +50,3 @@ def add_user(id_group: int, id_user: int, db: Session):
     db.add(user_group)
     db.commit()
     return group
-
